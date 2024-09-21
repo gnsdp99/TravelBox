@@ -33,11 +33,9 @@
 <img src="https://img.shields.io/badge/Java-f89820?style=flat&logo=openjdk&logoColor=black"/>
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=Spring Boot&logoColor=black"/>
 <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=black"/>
-<img src="https://img.shields.io/badge/MyBatis-black?style=flat&logoColor=black"/>
 
 <img src="https://img.shields.io/badge/Vue.js-4FC08D?style=flat&logo=Vue.js&logoColor=black"/>
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=black"/>
-<img src="https://img.shields.io/badge/Pinia-FFD400?style=flat&logoColor=black"/>
 
 <img src="https://img.shields.io/badge/Notion-333333?style=flat&logo=Notion&logoColor=white"/>
 <img src="https://img.shields.io/badge/GitLab-FCA121?style=flat&logo=GitLab&logoColor=white"/>
@@ -77,9 +75,9 @@
 
 ## 👨🏻‍💻 팀원 소개
 
-| <img src="https://avatars.githubusercontent.com/u/98015104?v=4" width="150" height="150"/> |                                                                       |
-| :----------------------------------------------------------------------------------------: | :-------------------------------------------------------------------: |
-|           [김예훈](https://github.com/gnsdp99)<br/>`Leader / Frontend / Backend`           | [이민지](https://github.com/Kguswo)<br/>`Frontend / Backend / Design` |
+| <img src="https://avatars.githubusercontent.com/u/98015104?v=4" width="150" height="150"/> |                                              |
+| :----------------------------------------------------------------------------------------: | :------------------------------------------: |
+|           [김예훈](https://github.com/gnsdp99)<br/>`Leader / Frontend / Backend`           | [이민지]()<br/>`Frontend / Backend / Design` |
 
 <div id="5"></div>
 
