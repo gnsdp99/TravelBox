@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelbox.chat.model.dao.ChatDao">
+
+    <sql id="selectMessage">
+        select c.chat_id, c.plan_id, c.sender_id, m.name, c.content, date_format(c.send_date, '%Y-%m-%d %H:%i:%s')
+        from chat c
+        join plan p on p.plan_id = c.plan_id
+        join member m on m.id = c.sender_id
+    </sql>
+
+    <select id="findAllMessages" resultMap="chatMessage" parameterType="int">
+        <include refid="selectMessage"></include>
+        where c.plan_id = #{planId}
+        order by send_date
+    </select>
+
+    <select id="findMessageById" resultType="chatMessage" parameterType="int">
+        <include refid="selectMessage"></include>
+        where c.chat_id = #{chatId}
+    </select>
+
+    <insert id="saveMessage" parameterType="chatMessage" useGeneratedKeys="true"
+            keyColumn="chat_id" keyProperty="chatId"
+    >
+        insert into chat (plan_id, sender_id, content)
+        values (#{planId}, #{senderId}, #{content})
+    </insert>
+
+    <resultMap id="chatMessage" type="chatMessage">
+        <id column="chat_id" property="chatId"/>
+        <result column="plan_id" property="planId"/>
+        <result column="id" property="senderId"/>
+        <result column="name" property="senderName"/>
+        <result column="content" property="content"/>
+        <result column="send_date" property="sendDate"/>
+    </resultMap>
+</mapper>

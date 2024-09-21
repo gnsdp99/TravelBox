@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelbox.plan.model.mapper.PlanMapper">
+
+    <resultMap id="PlanResultMap" type="planDto">
+        <id property="planId" column="plan_id"/>
+        <result property="planName" column="plan_name"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="registerDate" column="register_date"/>
+    </resultMap>
+
+    <resultMap id="PassportResultMap" type="passportDto">
+        <id property="passportId" column="passport_id"/>
+        <result property="planId" column="plan_id"/>
+        <result property="country" column="country"/>
+        <result property="name" column="name"/>
+        <result property="passportNumber" column="passport_number"/>
+        <result property="expiryDate" column="expiry_date"/>
+    </resultMap>
+
+    <resultMap id="planMemberMap" type="planMemberDto">
+        <result column="plan_id" property="planId"/>
+        <result column="id" property="memberId"/>
+        <result column="name" property="memberName"/>
+        <result column="is_manager" property="isManager"/>
+        <result column="join_date" property="joinDate"/>
+    </resultMap>
+
+    <sql id="selectPassport">
+        SELECT
+            passport_id,
+            plan_id,
+            country,
+            name,
+            passport_number,
+            expiry_date
+        FROM passport
+        WHERE passport_id = #{passportId}
+    </sql>
+
+    <sql id="selectPassportList">
+        SELECT
+            passport_id,
+            plan_id,
+            country,
+            name,
+            passport_number,
+            expiry_date
+        FROM passport
+        WHERE plan_id = #{planId}
+    </sql>
+    <select id="getPlanById" parameterType="string" resultType="int">
+        SELECT plan_id
+        FROM plan_member
+        WHERE member_id = #{userId}
+    </select>
+
+    <select id="getPlan" parameterType="int" resultMap="PlanResultMap">
+        SELECT p.plan_id, p.plan_name, p.start_date, p.end_date, p.register_date
+        FROM plan p
+        WHERE plan_id = #{planId}
+    </select>
+
+    <select id="getPassportByPlanId" resultMap="PassportResultMap">
+        <include refid="selectPassportList"></include>
+    </select>
+
+    <select id="getAccomodationId" parameterType="int" resultType="int">
+        SELECT COALESCE((SELECT accomodation_id FROM accomodation WHERE plan_id = #{planId}), -1)
+    </select>
+
+    <select id="getItineraryId" parameterType="int" resultType="int">
+        SELECT COALESCE((SELECT content_id FROM itinerary WHERE plan_id = #{planId}), -1)
+    </select>
+
+    <!-- passport 관련 -->
+
+    <select id="getPassportInfo" resultMap="PassportResultMap">
+        <include refid="selectPassport"></include>
+    </select>
+
+    <update id="updatePassportInfo" parameterType="passportDto">
+        update passport
+        set country = #{country}, name = #{name}, passport_number = #{passportNumber}, expiry_date= #{expiryDate}
+        where passport_id = #{passportId}
+    </update>
+
+    <insert id="insertPlan" parameterType="planDto" useGeneratedKeys="true" keyColumn="plan_id" keyProperty="planId">
+        insert into plan (plan_name, start_date, end_date)
+        values (#{planName}, #{startDate}, #{endDate})
+    </insert>
+
+    <update id="updatePlan" parameterType="planDto">
+        update plan
+        set plan_name = #{planName}, start_date = #{startDate}, end_date = #{endDate}
+        where plan_id = #{planId}
+    </update>
+
+    <delete id="deletePlan" parameterType="int">
+        delete from plan
+        where plan_id = #{planId}
+    </delete>
+
+    <insert id="insertPlanMember" parameterType="planMemberDto">
+        insert into plan_member (plan_id, member_id, is_manager)
+        values (#{planId}, #{memberId}, #{isManager})
+    </insert>
+
+    <delete id="deletePlanMember" parameterType="map">
+        delete from plan_member
+        where plan_id = #{planId} and member_id = #{memberId}
+    </delete>
+
+    <select id="selectPlanMember" resultMap="planMemberMap" parameterType="map">
+        select plan_id, member_id, is_manager, join_date
+        from plan_member
+        where plan_id = #{planId} and member_id = #{memberId}
+    </select>
+
+    <select id="selectPlansByMemberId" resultMap="PlanResultMap" parameterType="string">
+        select plan.plan_id, plan_name, start_date, end_date, register_date
+        from plan
+        join plan_member pm on plan.plan_id = pm.plan_id
+        join member m on pm.member_id = m.id
+        where m.id = #{memberId}
+    </select>
+
+    <select id="selectMembersByPlanId" parameterType="int" resultMap="planMemberMap">
+        select pm.plan_id, pm.member_id, m.name, pm.is_manager, pm.join_date
+        from plan_member pm
+        join member m on pm.member_id = m.id
+        where pm.plan_id = #{planId}
+    </select>
+
+    <insert id="insertPassport" parameterType="int" >
+        insert into passport (plan_id)
+        values (#{planId})
+    </insert>
+    <delete id="deletePassport" parameterType="int" >
+        delete from passport
+        where passport_id = #{passportId}
+    </delete>
+
+</mapper>
